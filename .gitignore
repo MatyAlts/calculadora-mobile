@@ -38,6 +38,16 @@ yarn-error.*
 
 example
 
-# generated native folders
-/ios
-/android
+# Native sources are versioned; generated build products are not.
+android/.gradle/
+android/.cxx/
+android/**/build/
+android/local.properties
+ios/Pods/
+ios/build/
+ios/**/*.xcuserstate
+ios/**/xcuserdata/
+.env
+.env.*
+!.env.example
+coverage/
