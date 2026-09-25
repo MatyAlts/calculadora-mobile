@@ -6,7 +6,6 @@ node_modules/
 # Expo
 .expo/
 dist/
-web-build/
 expo-env.d.ts
 
 # Native
@@ -47,6 +46,7 @@ ios/Pods/
 ios/build/
 ios/**/*.xcuserstate
 ios/**/xcuserdata/
+ios/.xcode.env.local
 .env
 .env.*
 !.env.example

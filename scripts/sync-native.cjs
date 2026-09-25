@@ -3,9 +3,9 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
-if (args.some((arg) => !['--clean', '--android', '--ios'].includes(arg)) ||
+if (args.some((arg) => !['--regenerate', '--android', '--ios'].includes(arg)) ||
     (args.includes('--android') && args.includes('--ios'))) {
-  console.error('Usage: npm run native:sync -- [--clean] [--android | --ios]');
+  console.error('Usage: npm run native:sync -- [--regenerate] [--android | --ios]');
   process.exit(1);
 }
 
@@ -24,8 +24,13 @@ try {
 }
 
 const platform = args.includes('--android') ? 'android' : args.includes('--ios') ? 'ios' : 'all';
+if (process.platform === 'win32' && platform !== 'android') {
+  console.error('Expo skips iOS on Windows. Use --android here; sync iOS on macOS or Linux (see README).');
+  process.exit(1);
+}
 const command = ['prebuild', '--platform', platform, '--no-install'];
-if (args.includes('--clean')) command.push('--clean');
+// SDK 57 recreates native folders by default. Opt out unless explicitly requested.
+if (!args.includes('--regenerate')) command.push('--no-clean');
 const result = spawnSync(process.execPath, [require.resolve('expo/bin/cli'), ...command], {
   cwd: root, stdio: 'inherit',
 });
